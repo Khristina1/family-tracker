@@ -1,0 +1,16 @@
+{
+  "name": "Family Tracker",
+  "short_name": "Tracker",
+  "description": "Live syncing family tracking app",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f3f4f6",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

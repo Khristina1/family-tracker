@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Family Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <meta name="description" content="A simple live-syncing family tracker">
+  <style>
+    @keyframes pulse {
+      0% {
+        opacity: 0.6;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0.6;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h1 style="margin-bottom:0;">Масік і я ❤️</h1>
+        <button id="refresh-btn" style="background:transparent; border:none; font-size:1.5rem; cursor:pointer;"
+          aria-label="Refresh Synced Data">🔄</button>
+      </div>
+
+      <!-- Main Person Tabs -->
+      <div class="person-tabs" style="margin-bottom: 8px; margin-top: 20px;">
+        <button class="person-tab active" data-person="hrystya">👩🏻 Христя</button>
+        <button class="person-tab" data-person="maks">👨🏻 Makc</button>
+      </div>
+
+      <div id="sync-status"
+        style="display:none; text-align:center; font-size: 0.85rem; font-weight: 500; color: #6366f1; margin-bottom: 12px; animation: pulse 1.5s infinite;">
+        ☁️ Syncing with cloud...
+      </div>
+    </header>
+
+    <main class="content">
+      <!-- Sub Tabs: Category -->
+      <div class="category-scroll">
+        <div class="category-tabs">
+          <button class="category-tab active" data-category="tasks">Завдання</button>
+          <button class="category-tab" data-category="shopping">Купити</button>
+          <button class="category-tab" data-category="gifts">Подарунки</button>
+        </div>
+      </div>
+
+      <div class="list-container">
+        <form class="add-form" id="main-form">
+          <input type="text" id="main-input" placeholder="Add a new task..." required autocomplete="off">
+          <button type="submit" class="btn-primary" aria-label="Add">+</button>
+        </form>
+
+        <ul class="task-list" id="main-list">
+          <!-- Items injected via JS -->
+        </ul>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(e => console.log('SW setup failed: ', e));
+      });
+    }
+  </script>
+  <script src="app.js"></script>
+</body>
+
+</html>
