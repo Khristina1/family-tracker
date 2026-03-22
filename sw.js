@@ -7,7 +7,6 @@ const urlsToCache = [
   '/manifest.json',
   '/icon.svg'
 ];
-
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
@@ -15,13 +14,12 @@ self.addEventListener('install', event => {
     })
   );
 });
-
 self.addEventListener('fetch', event => {
   // Do NOT cache GitHub API Database queries! We always want fresh tasks.
   if (event.request.url.includes('api.github.com')) {
     return;
   }
-  
+
   event.respondWith(
     caches.match(event.request).then(response => {
       // Return cached version if found, else fetch normally.

@@ -3,8 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Family Tracker</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
@@ -14,30 +13,46 @@
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon.svg">
   <meta name="description" content="A simple live-syncing family tracker">
+  
+  <!-- Powerful Libraries for enhanced UI features -->
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
   <style>
     @keyframes pulse {
-      0% {
-        opacity: 0.6;
-      }
-
-      50% {
-        opacity: 1;
-      }
-
-      100% {
-        opacity: 0.6;
-      }
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
     }
   </style>
 </head>
 
 <body>
+  <!-- Drawer for Resolved Tasks -->
+  <div id="drawer-overlay" class="drawer-overlay"></div>
+  <div id="drawer" class="drawer">
+    <div class="drawer-header">
+      <h2>✅ Resolved</h2>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <button id="clear-resolved-btn" class="icon-btn" title="Clear All Resolved" style="font-size: 1.4rem; color: var(--danger); background: transparent; border: none; cursor: pointer; padding: 4px;">🗑️</button>
+        <button id="close-drawer" class="icon-btn" aria-label="Close">✕</button>
+      </div>
+    </div>
+    <div class="drawer-content">
+      <ul id="resolved-list" class="task-list">
+        <!-- Resolved items injected via JS -->
+      </ul>
+    </div>
+  </div>
+
   <div class="app-container">
     <header class="app-header">
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h1 style="margin-bottom:0;">Масік і я ❤️</h1>
-        <button id="refresh-btn" style="background:transparent; border:none; font-size:1.5rem; cursor:pointer;"
-          aria-label="Refresh Synced Data">🔄</button>
+        <h1 style="margin-bottom:0;">Family Tracker</h1>
+        <div style="display:flex; gap: 12px;">
+          <button id="theme-toggle" class="icon-btn" title="Toggle Dark Mode" style="font-size: 1.6rem; background: transparent; border: none; cursor: pointer;">🌙</button>
+          <button id="burger-menu-btn" class="icon-btn" aria-label="Menu" style="font-size: 1.8rem; background: transparent; border: none; cursor: pointer; color: var(--text-main);">☰</button>
+        </div>
       </div>
 
       <!-- Main Person Tabs -->
@@ -46,8 +61,7 @@
         <button class="person-tab" data-person="maks">👨🏻 Makc</button>
       </div>
 
-      <div id="sync-status"
-        style="display:none; text-align:center; font-size: 0.85rem; font-weight: 500; color: #6366f1; margin-bottom: 12px; animation: pulse 1.5s infinite;">
+      <div id="sync-status" style="display:none; text-align:center; font-size: 0.85rem; font-weight: 500; color: #6366f1; margin-bottom: 12px; animation: pulse 1.5s infinite;">
         ☁️ Syncing with cloud...
       </div>
     </header>
@@ -56,20 +70,27 @@
       <!-- Sub Tabs: Category -->
       <div class="category-scroll">
         <div class="category-tabs">
-          <button class="category-tab active" data-category="tasks">Завдання</button>
-          <button class="category-tab" data-category="shopping">Купити</button>
-          <button class="category-tab" data-category="gifts">Подарунки</button>
+          <button class="category-tab active" data-category="tasks">Tasks</button>
+          <button class="category-tab" data-category="shopping">What to buy</button>
+          <button class="category-tab" data-category="gifts">Gifts</button>
         </div>
       </div>
 
       <div class="list-container">
+        <!-- Horizontal Single-Line Form -->
         <form class="add-form" id="main-form">
           <input type="text" id="main-input" placeholder="Add a new task..." required autocomplete="off">
+
+          <div style="position: relative; flex-shrink: 0; display: flex;">
+            <button type="button" class="date-icon-btn" id="date-btn" aria-label="Choose date" title="Add Due Date">📅</button>
+            <input type="date" id="date-input" style="opacity: 0; position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none;">
+          </div>
+
           <button type="submit" class="btn-primary" aria-label="Add">+</button>
         </form>
 
         <ul class="task-list" id="main-list">
-          <!-- Items injected via JS -->
+          <!-- Active items injected via JS -->
         </ul>
       </div>
     </main>
